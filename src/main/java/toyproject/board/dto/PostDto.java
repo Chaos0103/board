@@ -14,11 +14,9 @@ public class PostDto {
     private int commentCount;
     private int goodCount;
 
-    public PostDto(String title, String content, Boolean anonymous, int commentCount, int goodCount) {
+    public PostDto(String title, String content, Boolean anonymous) {
         this.title = title;
         this.content = content;
         this.anonymous = anonymous;
-        this.commentCount = commentCount;
-        this.goodCount = goodCount;
     }
 }
