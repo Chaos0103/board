@@ -33,14 +33,14 @@ public class Post extends TimeBaseEntity {
     private int commentCount;
     private int goodCount;
 
-    public Post(Member member, Board board, String title, String content, Boolean anonymous, int commentCount, int goodCount) {
+    public Post(Member member, Board board, String title, String content, Boolean anonymous) {
         this.member = member;
         this.board = board;
         this.title = title;
         this.content = content;
         this.anonymous = anonymous;
-        this.commentCount = commentCount;
-        this.goodCount = goodCount;
+        this.commentCount = 0;
+        this.goodCount = 0;
     }
 
     //==비즈니스 로직==//

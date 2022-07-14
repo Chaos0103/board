@@ -60,7 +60,7 @@ public class PostService {
     private Post getNewPost(PostDto postDto) {
         Board findBoard = getBoard(postDto.getBoardId());
         Member findMember = getMember(postDto.getMemberId());
-        return new Post(findMember, findBoard, postDto.getTitle(), postDto.getContent(), postDto.getAnonymous(), 0, 0);
+        return new Post(findMember, findBoard, postDto.getTitle(), postDto.getContent(), postDto.getAnonymous());
     }
 
     private Board getBoard(Long boardId) {
