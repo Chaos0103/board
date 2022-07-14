@@ -12,4 +12,8 @@ public class CommentDto {
     private boolean anonymous;
     private int goodCount;
 
+    public CommentDto(String content, boolean anonymous) {
+        this.content = content;
+        this.anonymous = anonymous;
+    }
 }
