@@ -8,6 +8,8 @@ import toyproject.board.dto.MemberDto;
 import toyproject.board.exception.NoSuchException;
 import toyproject.board.repository.MemberRepository;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -31,6 +33,15 @@ public class MemberService {
      */
     public void withdraw(Long memberId) {
         memberRepository.delete(checkMember(memberId));
+    }
+
+    /**
+     * 회원조회
+     */
+    public List<MemberDto> searchMemberList(String name) {
+        return memberRepository.findByName(name).stream()
+                .map(MemberDto::new)
+                .toList();
     }
 
     private Member dtoToEntity(MemberDto memberDto) {
