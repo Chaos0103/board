@@ -1,6 +1,7 @@
 package toyproject.board.dto;
 
 import lombok.Data;
+import toyproject.board.domain.Board;
 
 @Data
 public class BoardDto {
@@ -14,5 +15,12 @@ public class BoardDto {
         this.title = title;
         this.explanation = explanation;
         this.notion = notion;
+    }
+
+    public BoardDto(Board board) {
+        this.id = board.getId();
+        this.title = board.getTitle();
+        this.explanation = board.getExplanation();
+        this.notion = board.getNotion();
     }
 }

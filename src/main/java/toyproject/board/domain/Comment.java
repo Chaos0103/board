@@ -11,11 +11,15 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Comment extends TimeBaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
@@ -30,7 +34,8 @@ public class Comment {
     private Boolean anonymous;
     private int goodCount;
 
-    public Comment(Post post, Comment parent, String content, Boolean anonymous) {
+    public Comment(Member member, Post post, Comment parent, String content, Boolean anonymous) {
+        this.member = member;
         this.post = post;
         this.parent = parent;
         this.content = content;

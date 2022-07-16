@@ -54,6 +54,10 @@ public class Post extends TimeBaseEntity {
         this.goodCount++;
     }
 
+    public void addCommentCount() {
+        this.commentCount++;
+    }
+
     //==편의 메서드==//
     private String nullCheckTitle(String title) {
         return hasText(title) ? title : this.title;

@@ -8,6 +8,8 @@ import toyproject.board.dto.BoardDto;
 import toyproject.board.exception.NoSuchException;
 import toyproject.board.repository.BoardRepository;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -39,8 +41,14 @@ public class BoardService {
         boardRepository.delete(checkBoard(boardId));
     }
 
-    //게시판 조회
-
+    /**
+     * 전체 게시판 조회
+     */
+    public List<BoardDto> searchAll() {
+        return boardRepository.findAll().stream()
+                .map(BoardDto::new)
+                .toList();
+    }
 
     private Board dtoToEntity(BoardDto boardDto) {
         return new Board(boardDto.getTitle(), boardDto.getExplanation(), boardDto.getNotion());

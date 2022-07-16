@@ -12,6 +12,8 @@ import toyproject.board.repository.BoardRepository;
 import toyproject.board.repository.MemberRepository;
 import toyproject.board.repository.PostRepository;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -54,8 +56,23 @@ public class PostService {
         return findPost.getId();
     }
 
+    /**
+     * 전체 게시물 조회
+     */
+    public List<PostDto> searchPost(Long boardId) {
+        return postRepository.findByBoardId(boardId).stream()
+                .map(PostDto::new)
+                .toList();
+    }
+
+    /**
+     * 게시물 단건 조회
+     */
+    public PostDto findOneById(Long postId) {
+        Post post = postRepository.findContentById(postId);
+        return new PostDto(post);
+    }
     //게시물 신고
-    //게시물 조회
 
     private Post getNewPost(PostDto postDto) {
         Board findBoard = getBoard(postDto.getBoardId());

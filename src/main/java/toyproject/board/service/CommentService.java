@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.board.domain.Comment;
+import toyproject.board.domain.Member;
 import toyproject.board.domain.Post;
 import toyproject.board.dto.CommentDto;
 import toyproject.board.exception.NoSuchException;
 import toyproject.board.repository.CommentRepository;
+import toyproject.board.repository.MemberRepository;
 import toyproject.board.repository.PostRepository;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -17,6 +21,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 댓글 등록
@@ -43,12 +48,30 @@ public class CommentService {
         return findComment.getId();
     }
 
+    /**
+     * 댓글 조회
+     */
+    public List<CommentDto> searchComment(Long postId) {
+        List<Comment> commentList = commentRepository.findByPostId(postId);
+        return commentList.stream()
+                .map(CommentDto::new)
+                .toList();
+    }
+
     //댓글 신고
 
     private Comment getNewComment(CommentDto commentDto) {
+        Member findMember = getMember(commentDto.getMemberId());
         Post findPost = getPost(commentDto.getPostId());
+        findPost.addCommentCount();
         Comment findParentComment = getComment(commentDto.getParentCommentId());
-        return new Comment(findPost, findParentComment, commentDto.getContent(), commentDto.isAnonymous());
+        return new Comment(findMember, findPost, findParentComment, commentDto.getContent(), commentDto.isAnonymous());
+    }
+
+    private Member getMember(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> {
+            throw new NoSuchException("등록되지 않은 회원입니다.");
+        });
     }
 
     private Post getPost(Long postId) {
