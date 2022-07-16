@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <!-- post -->
+    <div th:object="${postDto}">
+        <div>
+            <h5 th:text="*{anonymous} ? '익명' : *{memberDto.nickname}"></h5>
+            <h6 th:text="*{#temporals.format(createdDate, 'yy/MM/dd HH:mm')}"></h6>
+        </div>
+        <br/>
+        <div>
+            <h5 th:text="*{title}"></h5>
+            <p th:text="*{content}"></p>
+        </div>
+        <div>
+            <span style="color: red">좋아요 </span>
+            <span th:text="*{goodCount}" style="color: red"></span>
+            <span style="color: blue">댓글 </span>
+            <span th:text="*{commentCount}" style="color: blue"></span>
+        </div>
+        <br/>
+        <button type="button" class="btn btn-primary mb-2">좋아요</button>
+    </div>
+    <br/>
+    <!-- comment -->
+    <div th:each="comment : ${commentDtoList}">
+        <div>
+            <h6 th:text="${comment.anonymous} ? '익명' : ${comment.memberDto.nickname}"></h6>
+            <button type="button" class="btn btn-primary mb-2" style="float: right">버튼</button>
+        </div>
+        <div>
+            <p th:text="${comment.content}"></p>
+        </div>
+        <div>
+            <h6 th:text="${#temporals.format(comment.createdDate, 'yy/MM/dd HH:mm')}">mm/dd hh:mm</h6>
+        </div>
+    </div>
+
+    <form method="post" th:object="${commentForm}">
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <td style="width: 8%">
+                    <div style="text-align: center; padding: 5px; margin-left: 15px">
+                        <input type="checkbox" id="anonymous" th:field="*{anonymous}" class="form-check-input">
+                        <label for="anonymous" class="form-check-label">익명</label>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" th:field="*{content}" class="form-control" placeholder="댓글을 입력하세요.">
+                </td>
+                <td style="width: 8%">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+
+</body>
+</html>

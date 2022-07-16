@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <!-- post -->
+    <div th:object="${postDto}">
+        <div>
+            <h5 th:text="*{anonymous} ? '익명' : *{id}"></h5>
+            <h6 th:text="*{createdDate}"></h6>
+        </div>
+        <br/>
+        <div>
+            <h5 th:text="*{title}"></h5>
+            <p th:text="*{content}"></p>
+        </div>
+        <div>
+            <span>공감 </span>
+            <span th:text="*{goodCount}"></span>
+            <span>댓글 </span>
+            <span th:text="*{commentCount}"></span>
+        </div>
+        <br/>
+        <button type="button" class="btn btn-primary mb-2">공감</button>
+    </div>
+
+    <!-- comment -->
+    <div>
+
+    </div>
+
+    <br/>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+
+</body>
+</html>
