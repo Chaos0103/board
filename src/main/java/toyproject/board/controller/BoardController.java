@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import toyproject.board.controller.form.BoardForm;
 import toyproject.board.controller.form.CommentForm;
 import toyproject.board.controller.form.PostForm;
+import toyproject.board.domain.ReportType;
 import toyproject.board.dto.BoardDto;
 import toyproject.board.dto.CommentDto;
 import toyproject.board.dto.PostDto;
+import toyproject.board.dto.ReportDto;
 import toyproject.board.service.BoardService;
 import toyproject.board.service.CommentService;
 import toyproject.board.service.PostService;
+import toyproject.board.service.ReportService;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -28,6 +32,7 @@ public class BoardController {
     private final BoardService boardService;
     private final PostService postService;
     private final CommentService commentService;
+    private final ReportService reportService;
 
     @GetMapping("/board/new")
     public String createBoard(@ModelAttribute("boardForm") BoardForm boardForm) {
@@ -67,10 +72,10 @@ public class BoardController {
     }
 
     @PostMapping("/board/{boardId}/post/new")
-    public String create(@PathVariable Long boardId, PostForm postForm) {
+    public String create(@PathVariable Long boardId, PostForm postForm, HttpSession session) {
         PostDto postDto = new PostDto(postForm.getTitle(), postForm.getContent(), postForm.getAnonymous());
         postDto.setBoardId(boardId);
-        postDto.setMemberId(1L);
+        postDto.setMemberId((Long) session.getAttribute("loginId"));
         postService.createPost(postDto);
         return "redirect:/board/{boardId}/post";
     }
@@ -85,11 +90,32 @@ public class BoardController {
     }
 
     @PostMapping("/board/{boardId}/post/{postId}/content")
-    public String comment(@PathVariable Long boardId, @PathVariable Long postId, CommentForm commentForm) {
+    public String comment(@PathVariable Long boardId, @PathVariable Long postId, CommentForm commentForm, HttpSession session) {
         CommentDto commentDto = new CommentDto(commentForm.getContent(), commentForm.getAnonymous());
         commentDto.setPostId(postId);
-        commentDto.setMemberId(1L);
+        commentDto.setMemberId((Long) session.getAttribute("loginId"));
         commentService.createComment(commentDto);
+        return "redirect:/board/{boardId}/post/{postId}/content";
+    }
+
+    @PostMapping("/board/{boardId}/post/{postId}/content/{commentId}/good")
+    public String commentGood(@PathVariable Long commentId, @PathVariable Long boardId, @PathVariable Long postId) {
+        commentService.goodComment(commentId);
+        return "redirect:/board/{boardId}/post/{postId}/content";
+    }
+
+    @PostMapping("/board/{boardId}/post/{postId}/good")
+    public String postGood(@PathVariable Long boardId, @PathVariable Long postId) {
+        postService.good(postId);
+        return "redirect:/board/{boardId}/post/{postId}/content";
+    }
+
+    @PostMapping("/board/{boardId}/post/{postId}/report")
+    public String postReport(@PathVariable Long boardId, @PathVariable Long postId, HttpSession session) {
+        ReportDto reportDto = new ReportDto(ReportType.TYPE1);
+        reportDto.setPostId(postId);
+        reportDto.setMemberId((Long) session.getAttribute("loginId"));
+        reportService.reportPost(reportDto);
         return "redirect:/board/{boardId}/post/{postId}/content";
     }
 

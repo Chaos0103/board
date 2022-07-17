@@ -24,23 +24,27 @@
             <span th:text="*{commentCount}" style="color: blue"></span>
         </div>
         <br/>
-        <button type="button" class="btn btn-primary mb-2">좋아요</button>
+        <a href="#" th:href="'javascript:postGood('+${boardId}+','+${postId}+')'" class="btn btn-primary">좋아요</a>
+        <a href="#" th:href="'javascript:postReport('+${boardId}+','+${postId}+')'" class="btn btn-danger">신고</a>
     </div>
     <br/>
     <!-- comment -->
     <div th:each="comment : ${commentDtoList}">
         <div>
             <h6 th:text="${comment.anonymous} ? '익명' : ${comment.memberDto.nickname}"></h6>
-            <button type="button" class="btn btn-primary mb-2" style="float: right">버튼</button>
+            <a style="float: right;" href="#" th:href="'javascript:commentGood('+${boardId}+','+${postId}+','+${comment.id}+')'" class="btn btn-primary">좋아요</a>
         </div>
         <div>
             <p th:text="${comment.content}"></p>
         </div>
         <div>
-            <h6 th:text="${#temporals.format(comment.createdDate, 'yy/MM/dd HH:mm')}">mm/dd hh:mm</h6>
+            <span th:text="${#temporals.format(comment.createdDate, 'yy/MM/dd HH:mm')}"></span>
+            <span style="color: red;">좋아요 </span>
+            <span style="color: red;" th:text="${comment.goodCount}"></span>
         </div>
     </div>
 
+    <!-- new comment -->
     <form method="post" th:object="${commentForm}">
         <table class="table table-striped">
             <tbody>
@@ -65,4 +69,27 @@
 </div> <!-- /container -->
 
 </body>
+<script>
+    function postGood(boardId, postId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/board/" + boardId + "/post/" + postId + "/good");
+        document.body.appendChild(form);
+        form.submit();
+    }
+    function postReport(boardId, postId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/board/" + boardId + "/post/" + postId + "/report");
+        document.body.appendChild(form);
+        form.submit();
+    }
+    function commentGood(boardId, postId, commentId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/board/" + boardId + "/post/" + postId + "/content/" + commentId + "/good");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>

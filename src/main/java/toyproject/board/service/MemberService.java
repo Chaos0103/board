@@ -38,6 +38,7 @@ public class MemberService {
     /**
      * 회원조회
      */
+    @Transactional(readOnly = true)
     public List<MemberDto> searchMemberList(String name) {
         return memberRepository.findByName(name).stream()
                 .map(MemberDto::new)

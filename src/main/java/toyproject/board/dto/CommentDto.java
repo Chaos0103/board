@@ -11,7 +11,6 @@ public class CommentDto {
     private Long id;
     private Long memberId;
     private Long postId;
-    private Long parentCommentId;
     private String content;
     private boolean anonymous;
     private int goodCount;
@@ -28,7 +27,6 @@ public class CommentDto {
         this.id = comment.getId();
         this.memberId = comment.getMember().getId();
         this.postId = comment.getPost().getId();
-        this.parentCommentId = comment.getParent().getId();
         this.content = comment.getContent();
         this.anonymous = comment.getAnonymous();
         this.goodCount = comment.getGoodCount();

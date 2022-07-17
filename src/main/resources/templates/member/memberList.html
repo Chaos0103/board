@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="member : ${memberDtos}">
+            <tr th:each="member : ${memberDtoList}">
                 <td th:text="${member.id}"></td>
                 <td th:text="${member.name}"></td>
                 <td th:text="${member.loginId}"></td>

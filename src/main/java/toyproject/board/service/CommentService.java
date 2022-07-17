@@ -51,6 +51,7 @@ public class CommentService {
     /**
      * 댓글 조회
      */
+    @Transactional(readOnly = true)
     public List<CommentDto> searchComment(Long postId) {
         List<Comment> commentList = commentRepository.findByPostId(postId);
         return commentList.stream()
@@ -64,8 +65,7 @@ public class CommentService {
         Member findMember = getMember(commentDto.getMemberId());
         Post findPost = getPost(commentDto.getPostId());
         findPost.addCommentCount();
-        Comment findParentComment = getComment(commentDto.getParentCommentId());
-        return new Comment(findMember, findPost, findParentComment, commentDto.getContent(), commentDto.isAnonymous());
+        return new Comment(findMember, findPost, commentDto.getContent(), commentDto.isAnonymous());
     }
 
     private Member getMember(Long memberId) {
@@ -81,9 +81,6 @@ public class CommentService {
     }
 
     private Comment getComment(Long commentId) {
-        if (commentId == null) {
-            return null;
-        }
         return commentRepository.findById(commentId).orElseThrow(() -> {
             throw new NoSuchException("등록되지 않은 댓글입니다.");
         });
