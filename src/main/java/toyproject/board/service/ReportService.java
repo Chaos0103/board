@@ -12,6 +12,8 @@ import toyproject.board.repository.MemberRepository;
 import toyproject.board.repository.PostRepository;
 import toyproject.board.repository.ReportRepository;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,6 +29,16 @@ public class ReportService {
     public Long reportPost(ReportDto reportDto) {
         Report savedReport = reportRepository.save(getNewReport(reportDto));
         return savedReport.getId();
+    }
+
+    /**
+     * 신고 조회
+     */
+    @Transactional(readOnly = true)
+    public List<ReportDto> reportList() {
+        return reportRepository.findAll().stream()
+                .map(ReportDto::new)
+                .toList();
     }
 
     private Report getNewReport(ReportDto reportDto) {

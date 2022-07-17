@@ -7,11 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import toyproject.board.controller.form.LoginForm;
 import toyproject.board.controller.form.MemberForm;
 import toyproject.board.dto.MemberDto;
 import toyproject.board.dto.MemberSearch;
+import toyproject.board.service.LoginService;
 import toyproject.board.service.MemberService;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 import java.util.List;
 
@@ -21,6 +24,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final LoginService loginService;
 
     @GetMapping("/member/new")
     public String joinMember(@ModelAttribute("memberForm") MemberForm memberForm) {
@@ -36,9 +40,21 @@ public class MemberController {
 
     @GetMapping("/member")
     public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model) {
-        List<MemberDto> memberDtos = memberService.searchMemberList(memberSearch.getName());
-        model.addAttribute("memberDtos", memberDtos);
+        List<MemberDto> memberDtoList = memberService.searchMemberList(memberSearch.getName());
+        model.addAttribute("memberDtoList", memberDtoList);
         return "/member/memberList";
+    }
+
+    @GetMapping("/login")
+    public String loginMember(@ModelAttribute("loginForm") LoginForm loginForm) {
+        return "/member/loginForm";
+    }
+
+    @PostMapping("/login")
+    public String login(LoginForm loginForm, HttpSession session) {
+        MemberDto loginMember = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
+        session.setAttribute("loginId", loginMember.getId());
+        return "redirect:/";
     }
 
     private MemberDto getMemberDto(MemberForm memberForm) {

@@ -59,6 +59,7 @@ public class PostService {
     /**
      * 전체 게시물 조회
      */
+    @Transactional(readOnly = true)
     public List<PostDto> searchPost(Long boardId) {
         return postRepository.findByBoardId(boardId).stream()
                 .map(PostDto::new)
@@ -68,6 +69,7 @@ public class PostService {
     /**
      * 게시물 단건 조회
      */
+    @Transactional(readOnly = true)
     public PostDto findOneById(Long postId) {
         Post post = postRepository.findContentById(postId);
         return new PostDto(post);

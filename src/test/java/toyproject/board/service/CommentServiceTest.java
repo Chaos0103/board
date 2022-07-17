@@ -43,7 +43,7 @@ class CommentServiceTest {
 
     @Test
     void removeComment() {
-        Comment comment = new Comment(null, null, null, "test comment", true);
+        Comment comment = new Comment(null, null, "test comment", true);
         Comment savedComment = commentRepository.save(comment);
 
         commentService.removeComment(savedComment.getId());
@@ -54,7 +54,7 @@ class CommentServiceTest {
 
     @Test
     void goodComment() {
-        Comment comment = new Comment(null, null, null, "test comment", true);
+        Comment comment = new Comment(null, null, "test comment", true);
         Comment savedComment = commentRepository.save(comment);
 
         Long commentId = commentService.goodComment(savedComment.getId());

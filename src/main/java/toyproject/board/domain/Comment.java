@@ -25,19 +25,14 @@ public class Comment extends TimeBaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "comment_id")
-    private Comment parent;
-
     @Lob
     private String content;
     private Boolean anonymous;
     private int goodCount;
 
-    public Comment(Member member, Post post, Comment parent, String content, Boolean anonymous) {
+    public Comment(Member member, Post post, String content, Boolean anonymous) {
         this.member = member;
         this.post = post;
-        this.parent = parent;
         this.content = content;
         this.anonymous = anonymous;
         this.goodCount = 0;

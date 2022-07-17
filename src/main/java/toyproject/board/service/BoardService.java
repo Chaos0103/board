@@ -44,6 +44,7 @@ public class BoardService {
     /**
      * 전체 게시판 조회
      */
+    @Transactional(readOnly = true)
     public List<BoardDto> searchAll() {
         return boardRepository.findAll().stream()
                 .map(BoardDto::new)
