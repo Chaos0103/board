@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.board.domain.Comment;
+import toyproject.board.domain.Member;
 import toyproject.board.domain.Post;
 import toyproject.board.dto.CommentDto;
 import toyproject.board.repository.CommentRepository;
+import toyproject.board.repository.MemberRepository;
 import toyproject.board.repository.PostRepository;
 
 import java.util.Optional;
@@ -23,11 +25,14 @@ class CommentServiceTest {
     @Autowired CommentService commentService;
     @Autowired CommentRepository commentRepository;
     @Autowired PostRepository postRepository;
+    @Autowired MemberRepository memberRepository;
 
     @Test
     void createComment() {
+        Member member = getMember();
         Post post = getPost();
         CommentDto commentDto = new CommentDto("test comment", true);
+        commentDto.setMemberId(member.getId());
         commentDto.setPostId(post.getId());
 
         Long commentId = commentService.createComment(commentDto);
@@ -56,6 +61,11 @@ class CommentServiceTest {
 
         Comment findComment = commentRepository.findById(commentId).get();
         assertThat(findComment.getGoodCount()).isEqualTo(1);
+    }
+
+    private Member getMember() {
+        Member newMember = new Member("testId", "testPw", "tester", "0101234568", "testNickname");
+        return memberRepository.save(newMember);
     }
 
     private Post getPost() {

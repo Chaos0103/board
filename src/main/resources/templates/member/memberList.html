@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <div>
+            <form class="form-inline">
+                <div th:object="${memberSearch}" class="form-group mb-2">
+                    <input type="text" th:field="*{name}" class="form-control" placeholder="회원명"/>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">검색</button>
+            </form>
+        </div>
+        <table class="table table-striped" style="text-align: center">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>회원명</th>
+                <th>아이디</th>
+                <th>연락처</th>
+                <th>닉네임</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${memberDtoList}">
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.name}"></td>
+                <td th:text="${member.loginId}"></td>
+                <td th:text="${member.phone}"></td>
+                <td th:text="${member.nickname}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+</body>
+<script>
+    function url(name) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/member?name=" + name);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

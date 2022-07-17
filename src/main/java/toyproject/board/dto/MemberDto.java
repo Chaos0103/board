@@ -1,6 +1,7 @@
 package toyproject.board.dto;
 
 import lombok.Data;
+import toyproject.board.domain.Member;
 
 @Data
 public class MemberDto {
@@ -18,5 +19,14 @@ public class MemberDto {
         this.name = name;
         this.phone = phone;
         this.nickname = nickname;
+    }
+
+    public MemberDto(Member member) {
+        this.id = member.getId();
+        this.loginId = member.getLoginId();
+        this.password = member.getPassword();
+        this.name = member.getName();
+        this.phone = member.getPhone();
+        this.nickname = member.getNickname();
     }
 }

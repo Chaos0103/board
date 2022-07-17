@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <h3>게시판이름</h3>
+        <button type="button" class="btn btn-primary mb-2" style="float: right" th:onclick="|location.href='@{/board/{boardId}/post/new (boardId=${boardId})}'|">글쓰기</button>
+    </div>
+    <div>
+        <span style="color: red">공지</span>
+        <span style="cursor: pointer">공지사항</span>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <tbody>
+            <tr th:each="post  : ${postDtoList}" th:onclick="|location.href='@{/board/{boardId}/post/{postId}/content (boardId=${boardId}, postId=${post.id})}'|" style="cursor: pointer">
+                <td>
+                    <div>
+                        <h5 th:text="${post.title}"></h5>
+                        <p th:text="${post.content}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 900px; color: #4e555b;"></p>
+                        <div>
+                            <div style="float: left; color: #6c757d">
+                                <span th:text="${#temporals.format(post.createdDate, 'yyyy/MM/dd HH:mm')}"></span>
+                                <span> | </span>
+                                <span th:text="${post.anonymous} == true ? '익명' : ${post.memberDto.nickname}"></span>
+                            </div>
+                            <div style="float: right;">
+                                <span style="color: red">좋아요 </span>
+                                <span th:text="${post.goodCount}" style="color: red"></span>
+                                <span style="color: blue">댓글 </span>
+                                <span th:text="${post.commentCount}" style="color: blue"></span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+</body>
+</html>
